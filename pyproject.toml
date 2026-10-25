@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "redloop"
+version = "0.1.0"
+description = "An agent that red-teams your agents with indirect prompt injection"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+redloop = "redloop.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["redloop*"]
+
+[tool.setuptools.package-data]
+"redloop.scenarios" = ["*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
