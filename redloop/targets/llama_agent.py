@@ -14,7 +14,9 @@ from http import HTTPStatus
 from typing import Any
 
 from redloop.sandbox import TOOL_SCHEMAS
+from redloop.judge.rule_judge import DESTINATIONS
 from redloop.targets.base import Agent, AgentUnavailable
+from redloop.targets.rule_agent import spotlight
 
 
 class LlamaAgentError(RuntimeError):
@@ -34,13 +36,19 @@ class LlamaAgent(Agent):
     _MAX_RESPONSE_BYTES = 1_048_576
     _MAX_CALLS_PER_TURN = 32
 
-    def __init__(self, max_turns: int = 8, timeout: float = 30.0) -> None:
+    def __init__(self, max_turns: int = 8, timeout: float = 30.0, defended: bool = False) -> None:
         if not isinstance(max_turns, int) or isinstance(max_turns, bool) or max_turns < 1:
             raise ValueError("max_turns must be a positive integer")
         if not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("timeout must be a positive finite number")
         self.max_turns = max_turns
         self.timeout = timeout
+        # Defended mode adds two deterministic, model-independent mitigations so
+        # ASR can be compared before/after on the same model: spotlighting of
+        # tool outputs and an adapter-level tool/destination allowlist.
+        self.defended = defended
+        if defended:
+            self.name = "llama-guarded"
 
     def run(self, sandbox: Any, scenario: dict[str, Any]) -> str:
         config = {
@@ -124,7 +132,8 @@ class LlamaAgent(Agent):
                         arguments = json.loads(function["arguments"])
                         if not isinstance(arguments, dict):
                             raise ValueError("tool arguments must be a JSON object")
-                        output = sandbox.call(name, **arguments)
+                        blocked = self._blocked(name, arguments, scenario) if self.defended else None
+                        output = {"error": blocked} if blocked else sandbox.call(name, **arguments)
                     except (KeyError, TypeError, ValueError) as exc:
                         error = str(exc).replace(config["LLAMA_API_KEY"], "[redacted]")
                         output = {"error": " ".join(error.split())[:300]}
@@ -132,11 +141,28 @@ class LlamaAgent(Agent):
                     {
                         "role": "tool",
                         "tool_call_id": call["id"],
-                        "content": json.dumps(output, ensure_ascii=False),
+                        "content": spotlight(output) if self.defended else json.dumps(output, ensure_ascii=False),
                     }
                 )
 
         raise LlamaAgentError(f"Llama agent did not finish within {self.max_turns} turns")
+
+    @staticmethod
+    def _blocked(name: str, arguments: dict[str, Any], scenario: dict[str, Any]) -> str | None:
+        """Return a refusal reason if the call breaks the trusted policy."""
+        policy = scenario.get("policy", {})
+        if name in set(policy.get("forbidden_tools", [])):
+            return "Blocked by allowlist: tool is forbidden by policy."
+        allowed_tools = scenario.get("allowed_tools")
+        if allowed_tools is not None and name not in set(allowed_tools):
+            return "Blocked by allowlist: tool is not allowed for this task."
+        key = DESTINATIONS.get(name, False)
+        if key is not False:
+            allowed = {str(r).strip().casefold() for r in policy.get("allowed_recipients", [])}
+            target = arguments.get(key, "") if key else "public"
+            if not isinstance(target, str) or target.strip().casefold() not in allowed:
+                return "Blocked by allowlist: destination is not allowed."
+        return None
 
     @staticmethod
     def _tools() -> tuple[list[dict[str, Any]], dict[str, str]]:

@@ -13,6 +13,10 @@ def make_agent(name: str) -> Agent:
         from .llama_agent import LlamaAgent
 
         return LlamaAgent()
+    if name == "llama-guarded":
+        from .llama_agent import LlamaAgent
+
+        return LlamaAgent(defended=True)
     raise ValueError(f"Unknown agent: {name}")
 
 

@@ -13,7 +13,7 @@ def main(argv: list[str] | None = None) -> int:
     commands.add_parser("list", help="List bundled scenarios")
     run = commands.add_parser("run", help="Inject, run, judge and append results")
     run.add_argument("--scenario", default="email_exfil", help="Bundled name or JSON path")
-    run.add_argument("--agent", choices=("naive", "guarded", "llama"), default="naive")
+    run.add_argument("--agent", choices=("naive", "guarded", "llama", "llama-guarded"), default="naive")
     run.add_argument("--all", action="store_true", help="Run all bundled scenarios; overrides --scenario")
     run.add_argument("--payload", default=None, help="Custom injection (empty string runs a control)")
     run.add_argument("--results", type=Path, default=DEFAULT_RESULTS, help="Append-only JSONL destination")
@@ -29,8 +29,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "attack":
         from redloop.attacker.search import evolve
         agents = [name.strip() for name in args.agents.split(",") if name.strip()]
-        if not agents or any(a not in ("naive", "guarded", "llama") for a in agents):
-            parser.error("--agents must list naive, guarded and/or llama")
+        if not agents or any(a not in ("naive", "guarded", "llama", "llama-guarded") for a in agents):
+            parser.error("--agents must list naive, guarded, llama and/or llama-guarded")
         names = list_scenarios() if args.all else [args.scenario]
         print(f"{'SCENARIO':28} {'CANDS':>5}  " + "  ".join(f"{a + ' ASR':>12}" for a in agents))
         print("-" * 76)

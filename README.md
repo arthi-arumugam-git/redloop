@@ -58,6 +58,8 @@ export LLAMA_BASE_URL='https://your-provider.example/v1'
 export LLAMA_API_KEY='your-key'
 export LLAMA_MODEL='your-tool-capable-llama-model'
 python -m redloop run --all --agent llama
+python -m redloop run --all --agent llama-guarded   # same model + spotlighting + tool/destination allowlist
+python -m redloop attack --all --agents llama,llama-guarded   # before/after ASR on the real model
 ```
 
 The adapter uses `urllib`, appends `/chat/completions` to the base URL, and executes returned tool calls in the same local sandbox. Tool names use double underscores on the wire, such as `gmail__read_email`. The configured model receives the trusted task and tool outputs, including injected content. Any missing configuration produces SKIP without a network request. Endpoint errors and exhausted turn budgets produce ERROR; live-model results are not expected to match the deterministic demo.
