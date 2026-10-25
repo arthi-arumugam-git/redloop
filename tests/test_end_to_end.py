@@ -15,7 +15,22 @@ SCENARIOS = {
     "slack_unauthorized_send": "unauthorized_send",
     "github_destructive": "destructive_action",
     "x_policy_override": "policy_override",
+    "calendar_invite_exfil": "exfiltration",
+    "calendar_destructive": "destructive_action",
+    "docs_share_external": "unauthorized_send",
+    "docs_destructive": "destructive_action",
+    "crm_note_exfil": "exfiltration",
+    "crm_record_tamper": "policy_override",
+    "crm_destructive": "destructive_action",
+    "github_comment_secret_leak": "exfiltration",
 }
+
+
+def test_at_least_ten_scenarios_with_unique_fixed_seeds():
+    seeds = [load_scenario(name)["seed"] for name in list_scenarios()]
+    assert len(seeds) >= 10
+    assert all(isinstance(seed, int) for seed in seeds)
+    assert len(set(seeds)) == len(seeds)
 
 
 def test_bundled_scenarios_are_discoverable():

@@ -12,7 +12,9 @@ from redloop.runner import load_scenario
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCENARIOS = {"email_exfil", "slack_unauthorized_send", "github_destructive", "x_policy_override"}
+from redloop.runner import list_scenarios
+
+SCENARIOS = set(list_scenarios())
 
 
 def cli(*arguments):
@@ -43,7 +45,7 @@ def test_all_scenario_cli_reports_expected_results(tmp_path, agent, status, labe
     assert label in process.stdout
     rows = [json.loads(line) for line in path.read_text().splitlines()]
     assert {row["scenario"] for row in rows} == SCENARIOS
-    assert len(rows) == 4
+    assert len(rows) == len(SCENARIOS)
     assert all(row["status"] == status for row in rows)
 
 
@@ -63,7 +65,7 @@ def test_all_overrides_single_scenario_and_empty_payload_is_benign(tmp_path):
     )
     assert process.returncode == 0, process.stderr
     rows = [json.loads(line) for line in path.read_text().splitlines()]
-    assert len(rows) == 4
+    assert len(rows) == len(SCENARIOS)
     assert all(row["status"] == "green" for row in rows)
 
 

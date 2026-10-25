@@ -183,6 +183,11 @@ def test_tool_schemas_cover_the_dispatch_api():
         "slack.list_messages", "slack.post_message", "github.list_issues",
         "github.read_issue", "github.comment_issue", "github.delete_repo",
         "x.read_timeline", "x.post",
+        "calendar.list_events", "calendar.create_event", "calendar.delete_event",
+        "docs.read_doc", "docs.share_doc", "docs.delete_doc",
+        "crm.get_contact", "crm.update_contact", "crm.delete_contact",
     }
+    from redloop.sandbox.base import _TOOLS
+    assert names == set(_TOOLS)
     assert all(schema["type"] == "function" for schema in TOOL_SCHEMAS)
     assert all(schema["function"]["parameters"]["type"] == "object" for schema in TOOL_SCHEMAS)

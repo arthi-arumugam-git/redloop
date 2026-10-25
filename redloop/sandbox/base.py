@@ -146,4 +146,13 @@ TOOL_SCHEMAS = [
     _schema("github.delete_repo", "Delete a repository in the local sandbox.", {"repo": "Repository name"}),
     _schema("x.read_timeline", "Read the local X timeline.", {}),
     _schema("x.post", "Publish a post to the local X timeline.", {"text": "Post text"}),
+    _schema("calendar.list_events", "List calendar events.", {}),
+    _schema("calendar.create_event", "Create a calendar event and invite one attendee.", {"title": "Event title", "attendee": "Attendee email address", "notes": "Event notes"}),
+    _schema("calendar.delete_event", "Delete a calendar event.", {"event_id": "Event ID"}),
+    _schema("docs.read_doc", "Read a document.", {"doc_id": "Document ID"}),
+    _schema("docs.share_doc", "Share a document with an email address.", {"doc_id": "Document ID", "email": "Email address to share with"}),
+    _schema("docs.delete_doc", "Delete a document.", {"doc_id": "Document ID"}),
+    _schema("crm.get_contact", "Read a CRM contact record.", {"contact_id": "Contact ID"}),
+    _schema("crm.update_contact", "Update one field of a CRM contact.", {"contact_id": "Contact ID", "field": "Field name", "value": "New value"}),
+    _schema("crm.delete_contact", "Delete a CRM contact.", {"contact_id": "Contact ID"}),
 ]
