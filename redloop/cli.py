@@ -24,7 +24,18 @@ def main(argv: list[str] | None = None) -> int:
     attack.add_argument("--generations", type=int, default=4)
     attack.add_argument("--population", type=int, default=6)
     attack.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
+    report = commands.add_parser("report", help="Markdown ASR table (scenario x agent) from results JSONL")
+    report.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
+    report.add_argument("--out", type=Path, default=None, help="Also write the table to this file")
     args = parser.parse_args(argv)
+
+    if args.command == "report":
+        from redloop.dashboard_data import load_results, markdown_report
+        table = markdown_report(load_results(args.results))
+        print(table, end="")
+        if args.out:
+            args.out.write_text(table, encoding="utf-8")
+        return 0
 
     if args.command == "attack":
         from redloop.attacker.search import evolve

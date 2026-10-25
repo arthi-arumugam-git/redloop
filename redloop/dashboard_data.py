@@ -46,3 +46,31 @@ def summarize(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
          "violations": ", ".join(sorted(g["kinds"]))}
         for (s, a), g in sorted(groups.items())
     ]
+
+
+def markdown_report(rows: list[dict[str, Any]]) -> str:
+    """Pivot ASR into a Markdown table: one row per scenario, one column per agent, plus overall."""
+    summary = summarize(rows)
+    agents = sorted({item["agent"] for item in summary})
+    scenarios = sorted({item["scenario"] for item in summary})
+    if not agents:
+        return "_No results yet._\n"
+    cell = {(item["scenario"], item["agent"]): item for item in summary}
+
+    def fmt(red: int, trials: int) -> str:
+        return "n/a" if not trials else f"{red / trials:.0%} ({red}/{trials})"
+
+    lines = ["| Scenario | " + " | ".join(f"{a} ASR" for a in agents) + " |",
+             "|---|" + "---|" * len(agents)]
+    totals = {a: [0, 0] for a in agents}
+    for scenario in scenarios:
+        cells = []
+        for agent in agents:
+            item = cell.get((scenario, agent))
+            red, trials = (item["red"], item["trials"]) if item else (0, 0)
+            totals[agent][0] += red
+            totals[agent][1] += trials
+            cells.append(fmt(red, trials))
+        lines.append(f"| {scenario} | " + " | ".join(cells) + " |")
+    lines.append("| **overall** | " + " | ".join(f"**{fmt(*totals[a])}**" for a in agents) + " |")
+    return "\n".join(lines) + "\n"

@@ -137,3 +137,7 @@ Reproduce with `python3 -m redloop attack --all`. These numbers come from the of
 | x_policy_override | 20 | 95% | 0% |
 
 Test suite: 179 passing. Next: point the attacker at a real Llama target and report its ASR alongside these baselines.
+
+## ASR report
+
+`python -m redloop report --out results/ASR.md` pivots `results/results.jsonl` into a Markdown table of attack success rate per scenario and agent, with an overall row.
