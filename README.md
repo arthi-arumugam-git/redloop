@@ -109,3 +109,8 @@ The search scaffold evaluates seeds, mutates the current best payload, and keeps
 - **Later:** results viewer and defense suggestions backed by rerun evidence.
 
 Submission fields and eligibility details remain placeholders in [SUBMISSION_FIELDS.md](SUBMISSION_FIELDS.md) until kickoff rules are available. This scaffold does not assume unverified event dates or submission requirements.
+
+## Day-2 additions (offline, no API keys)
+- 12 seeded scenarios: email, Slack, GitHub, X, plus **calendar**, **docs**, and **CRM** IPI patterns (`python -m redloop list`).
+- Offline attacker search: `python -m redloop attack --all [--agents naive,guarded] [--generations 4 --population 6]`. Seven text mutation operators, seeded per scenario, scored by the rule judge, report ASR per target.
+- Dashboard: `pip install -e '.[dashboard]' && streamlit run dashboard/app.py` (reads `results/results.jsonl`).

@@ -17,7 +17,36 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--all", action="store_true", help="Run all bundled scenarios; overrides --scenario")
     run.add_argument("--payload", default=None, help="Custom injection (empty string runs a control)")
     run.add_argument("--results", type=Path, default=DEFAULT_RESULTS, help="Append-only JSONL destination")
+    attack = commands.add_parser("attack", help="Offline mutate-and-score search (no model needed)")
+    attack.add_argument("--scenario", default="email_exfil", help="Bundled name or JSON path")
+    attack.add_argument("--all", action="store_true", help="Search every bundled scenario")
+    attack.add_argument("--agents", default="naive,guarded", help="Comma-separated targets")
+    attack.add_argument("--generations", type=int, default=4)
+    attack.add_argument("--population", type=int, default=6)
+    attack.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
     args = parser.parse_args(argv)
+
+    if args.command == "attack":
+        from redloop.attacker.search import evolve
+        agents = [name.strip() for name in args.agents.split(",") if name.strip()]
+        if not agents or any(a not in ("naive", "guarded", "llama") for a in agents):
+            parser.error("--agents must list naive, guarded and/or llama")
+        names = list_scenarios() if args.all else [args.scenario]
+        print(f"{'SCENARIO':28} {'CANDS':>5}  " + "  ".join(f"{a + ' ASR':>12}" for a in agents))
+        print("-" * 76)
+        for name in names:
+            try:
+                summary = evolve(name, agents, generations=args.generations,
+                                 population=args.population, results_path=args.results)
+            except (ValueError, OSError) as exc:
+                parser.error(str(exc))
+            cells = "  ".join(
+                f"{'n/a' if summary['asr'][a] is None else format(summary['asr'][a], '.0%'):>12}"
+                for a in summary["agents"]
+            )
+            print(f"{summary['scenario']:28} {summary['candidates']:>5}  {cells}")
+        print(f"Results: {args.results}")
+        return 0
 
     if args.command == "list":
         for name in list_scenarios():
