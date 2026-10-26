@@ -28,6 +28,11 @@ def main(argv: list[str] | None = None) -> int:
     report = commands.add_parser("report", help="Markdown ASR table (scenario x agent) from results JSONL")
     report.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
     report.add_argument("--out", type=Path, default=None, help="Also write the table to this file")
+    report.add_argument("--no-latency", action="store_true", help="Omit the cost/latency table")
+    badge = commands.add_parser("badge", help="Write an offline SVG ASR badge and print the README markdown snippet")
+    badge.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
+    badge.add_argument("--agent", default="guarded")
+    badge.add_argument("--out", type=Path, default=Path("assets/redloop-asr-badge.svg"))
     export = commands.add_parser("export-suite", help="Freeze red payloads into a regression suite JSON")
     export.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
     export.add_argument("--out", type=Path, default=Path("results/regression_suite.json"))
@@ -61,11 +66,25 @@ def main(argv: list[str] | None = None) -> int:
         return suite_exit_code(summary)
 
     if args.command == "report":
-        from redloop.dashboard_data import load_results, markdown_report
-        table = markdown_report(load_results(args.results))
+        from redloop.dashboard_data import latency_report, load_results, markdown_report
+        rows = load_results(args.results)
+        table = markdown_report(rows)
+        latency = "" if args.no_latency else latency_report(rows)
+        if latency:
+            table += ("\n### Cost and latency\n\n" + latency
+                      + "\n_Seconds are wall-clock per scenario run. Tokens/USD are N/A for offline mock targets._\n")
         print(table, end="")
         if args.out:
             args.out.write_text(table, encoding="utf-8")
+        return 0
+
+    if args.command == "badge":
+        from redloop.dashboard_data import asr_badge, load_results
+        svg, value = asr_badge(load_results(args.results), args.agent)
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(svg, encoding="utf-8")
+        print(f"Wrote {args.out} (ASR {value})")
+        print(f"![RedLoop ASR]({args.out.as_posix()})")
         return 0
 
     if args.command == "attack":

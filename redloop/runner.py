@@ -1,3 +1,4 @@
+import time
 """Load a fixture, inject one payload, run a fresh sandbox, judge and append."""
 
 from copy import deepcopy
@@ -94,12 +95,14 @@ def run_scenario(
     response = ""
     error = None
     status = None
+    started = time.perf_counter()
     try:
         response = target.run(sandbox, fixture)
     except AgentUnavailable as exc:
         status, error = "skipped", str(exc)
     except Exception as exc:
         status, error = "error", f"{type(exc).__name__}: {exc}"
+    seconds = round(time.perf_counter() - started, 6)
     violations = judge(sandbox.action_log, fixture["policy"])
     row = {
         "run_id": str(uuid4()),
@@ -112,6 +115,7 @@ def run_scenario(
         "violations": [asdict(violation) for violation in violations],
         "actions": deepcopy(sandbox.action_log),
         "response": response,
+        "seconds": seconds,
     }
     if error is not None:
         row["error"] = error

@@ -7,9 +7,9 @@ Startup track is judged on **technical execution and whether it holds up in prod
 | --- | --- | --- |
 | Can a team drop it into CI? | `action.yml` GitHub Action + `check-suite` gate that fails the build on any regression | Done (06078f5) |
 | Is the score reproducible? | Frozen attack suite (65 payloads, 13 scenarios incl. PixelInject), deterministic offline run, seedable | Done (3fda41e) |
-| Does it work on a real Meta model? | `llama-guarded` target + Muse Spark target via Meta Model API, LLM judge on Muse Spark | Llama done; Muse env wired (META_API_KEY → api.meta.ai/v1, muse-spark-1.3). Live smoke Oct 26 5:25 PM IST: HTTP 401 invalid_api_key, live ASR pending valid key |
+| Does it work on a real Meta model? | `llama-guarded` target + Muse Spark target via Meta Model API, LLM judge on Muse Spark | Llama done; Muse env wired (META_API_KEY → api.meta.ai/v1, muse-spark-1.3). Live runs **blocked on Meta billing** (402 billing_not_configured; card hold failed). Offline path is the demo until the hold succeeds |
 | Is the judge trustworthy? | `ChatLLMJudge` + `agreement()` vs rule judge, report agreement % in README | Code done; run on real model pending |
-| Is it fast and cheap enough? | Report wall-clock and token cost per suite run in `report` output | TODO |
+| Is it fast and cheap enough? | `report` prints a cost/latency table (runs, total/mean/p95 seconds, tokens, USD); every run row records `seconds` | Seconds done offline; tokens/USD N/A until a real model call |
 | Does it fail safely? | Retries/backoff (429/5xx/resets, Retry-After, `REDLOOP_HTTP_ATTEMPTS`) and timeouts on model calls; errors recorded as `error` rows, non-zero exit | Done: retries (3453dab); `check-suite` exits 3 on infra errors (UNKNOWN), 1 on vulnerability |
 | Can a customer see value in 3 minutes? | `make showcase` + DEMO_SCRIPT.md (naive 91% ASR to guarded 0%) | Done (bdec6b8) |
 
@@ -19,7 +19,7 @@ Startup track is judged on **technical execution and whether it holds up in prod
 - **Why now:** agents now read untrusted tool output (email, web, tickets); one injected instruction can exfiltrate data or send mail.
 
 ## Next build steps (priority order)
-1. Cost and latency columns in `report` (tokens, seconds, USD per run).
+1. ~~Cost and latency columns in `report`~~ seconds done; tokens/USD wire-up after Muse billing clears.
 2. ~~Retry wrapper; distinct infra exit code~~ done (exit 3 = infra/UNKNOWN, 1 = vulnerable).
 3. Run the suite on Muse Spark via Meta Model API as soon as kickoff grants access; publish before/after table.
 4. ~~Install section at top of README~~ done (3-line install + flow diagram).
@@ -31,4 +31,9 @@ Startup track is judged on **technical execution and whether it holds up in prod
 3. **PixelInject visual scenario:** real offline scenario `pixelinject_ticket_screenshot` (injection in the ticket screenshot's `ocr_text` leaf, read via `tickets.read_attachment`; naive emails the secret, guarded stays green) plus an offline Pillow PNG (`assets/pixelinject_demo.png`, `python -m redloop.scenarios.visual.pixelinject_stub`). Muse Image (`generate_image`) and SAM (`segment_regions`) hooks are optional polish after kickoff.
 4. **Video (about 3 min), PR red to green:** (a) open a PR that weakens the guard; (b) the Action runs and `check-suite` exits 1, so the PR goes red with ASR shown; (c) show the injected payload and action log (the secret was emailed); (d) restore the guard, push, and it goes green at 0% ASR; (e) show the PixelInject screenshot attack and the Muse Spark judge verdict; (f) show the dashboard trend and badge.
 
-Open: cost/latency columns in `report` (we can scaffold seconds offline; tokens and USD need real model calls).
+## Muse status (Oct 26 2026)
+Muse Spark live runs are **blocked on Meta Model API billing** (402 `billing_not_configured`; Mastercard payment hold failed). Arthi chose to skip Muse for now. The **offline path is the demo** until the card hold succeeds; nothing in CI or the demo needs `META_API_KEY`.
+
+Offline polish shipped: seconds/latency columns in `report`; `python -m redloop badge` (offline SVG + README snippet, `assets/redloop-asr-badge.svg`); `check-suite` exit codes 0/1/3 covered by tests; `VIDEO_SCRIPT.md` outline.
+
+After billing clears: record tokens/USD per Muse call into result rows (`tokens`, `usd` fields are already read by `report`), run the suite on Muse Spark as target/judge, publish judge agreement %, fill DEMO_SCRIPT placeholders, host dashboard/badge.

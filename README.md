@@ -1,5 +1,7 @@
 # RedLoop Cloud: unit tests for agent security
 
+![RedLoop ASR](assets/redloop-asr-badge.svg)
+
 **Fails your PR when prompt-injection ASR regresses.** Meta Global AI Hackathon, Startup track.
 
 ```
@@ -17,6 +19,8 @@
                  ▼
    dashboard / badge (local Streamlit today; hosted is planned)
 ```
+
+> **Muse Spark status (Oct 26 2026):** live Muse runs are blocked on Meta Model API billing (`402 billing_not_configured`; card payment hold failed). Until the hold succeeds, **the offline path is the demo**: mock naive/guarded targets, rule judge, frozen 65-case suite. No `META_API_KEY` is required for anything below.
 
 Install in 3 lines:
 
@@ -211,3 +215,12 @@ Gate any repo's CI on the frozen attack suite (fails the job if an attack that u
 
 
 Current offline suite: 65 cases across 13 scenarios; naive 65/65 succeed, guarded 0/65.
+
+## Cost, latency and badge (offline)
+
+```sh
+python -m redloop report            # ASR table + cost/latency table (seconds per run; tokens/USD N/A offline)
+python -m redloop badge             # writes assets/redloop-asr-badge.svg, prints the README snippet
+```
+
+Badge snippet: `![RedLoop ASR](assets/redloop-asr-badge.svg)` (green at 0%, orange <=10%, red above, grey "unknown" with no completed runs). `check-suite` exit codes: 0 green, 1 vulnerable, 3 infra error/UNKNOWN.
