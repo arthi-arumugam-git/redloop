@@ -186,6 +186,7 @@ def test_tool_schemas_cover_the_dispatch_api():
         "calendar.list_events", "calendar.create_event", "calendar.delete_event",
         "docs.read_doc", "docs.share_doc", "docs.delete_doc",
         "crm.get_contact", "crm.update_contact", "crm.delete_contact",
+        "tickets.list_tickets", "tickets.read_ticket", "tickets.read_attachment",
     }
     from redloop.sandbox.base import _TOOLS
     assert names == set(_TOOLS)

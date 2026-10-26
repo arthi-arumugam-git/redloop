@@ -17,7 +17,7 @@ def test_infra_only_is_unknown_exit_3():
     assert suite_exit_code(s(errors=1)) == 3
 
 
-def test_pixelinject_stub_skips_offline(monkeypatch):
+def test_pixelinject_live_path_skips_without_muse(monkeypatch):
     from redloop.scenarios.visual import pixelinject_stub as p
     monkeypatch.delenv("MUSE_API_KEY", raising=False)
-    assert p.SCENARIO["status"] == "stub" and not p.available()
+    assert p.SCENARIO["status"] == "offline" and not p.available()

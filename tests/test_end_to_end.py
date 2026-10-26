@@ -23,6 +23,7 @@ SCENARIOS = {
     "crm_record_tamper": "policy_override",
     "crm_destructive": "destructive_action",
     "github_comment_secret_leak": "exfiltration",
+    "pixelinject_ticket_screenshot": "exfiltration",
 }
 
 

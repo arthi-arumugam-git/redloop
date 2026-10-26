@@ -16,4 +16,4 @@ One-command pipeline: `./scripts/showcase.sh` (or `make showcase`). Artifacts la
 ## Before recording
 - Set `LLAMA_BASE_URL`, `LLAMA_API_KEY`, `LLAMA_MODEL` (and `JUDGE_*` for the LLM judge), then rerun with the llama agents so the table shows a real model.
 - Replace the two "fill in" numbers with the real ones from that run. Never show placeholder figures.
-- Offline baseline (mock targets, this run): naive 60/60 frozen cases still succeed, guarded 0/60.
+- Offline baseline (mock targets, this run): naive 65/65 frozen cases still succeed, guarded 0/65.

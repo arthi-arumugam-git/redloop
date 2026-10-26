@@ -155,4 +155,7 @@ TOOL_SCHEMAS = [
     _schema("crm.get_contact", "Read a CRM contact record.", {"contact_id": "Contact ID"}),
     _schema("crm.update_contact", "Update one field of a CRM contact.", {"contact_id": "Contact ID", "field": "Field name", "value": "New value"}),
     _schema("crm.delete_contact", "Delete a CRM contact.", {"contact_id": "Contact ID"}),
+    _schema("tickets.list_tickets", "List support ticket summaries.", {}),
+    _schema("tickets.read_ticket", "Read a support ticket and its attachment list.", {"ticket_id": "Ticket ID"}),
+    _schema("tickets.read_attachment", "Read a ticket attachment, including OCR text extracted from screenshots.", {"ticket_id": "Ticket ID", "attachment_id": "Attachment ID"}),
 ]

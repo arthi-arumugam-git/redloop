@@ -6,7 +6,7 @@ Startup track is judged on **technical execution and whether it holds up in prod
 | Judge question | Evidence we ship | Status |
 | --- | --- | --- |
 | Can a team drop it into CI? | `action.yml` GitHub Action + `check-suite` gate that fails the build on any regression | Done (06078f5) |
-| Is the score reproducible? | Frozen attack suite (60 payloads), deterministic offline run, seedable | Done (3fda41e) |
+| Is the score reproducible? | Frozen attack suite (65 payloads, 13 scenarios incl. PixelInject), deterministic offline run, seedable | Done (3fda41e) |
 | Does it work on a real Meta model? | `llama-guarded` target + Muse Spark target via Meta Model API, LLM judge on Muse Spark | Llama done; Muse Spark pending API key after kickoff |
 | Is the judge trustworthy? | `ChatLLMJudge` + `agreement()` vs rule judge, report agreement % in README | Code done; run on real model pending |
 | Is it fast and cheap enough? | Report wall-clock and token cost per suite run in `report` output | TODO |
@@ -28,7 +28,7 @@ Startup track is judged on **technical execution and whether it holds up in prod
 **RedLoop Cloud + one PixelInject scenario.** gstack priorities:
 1. **Muse Spark as target, attacker and judge.** Judge errors or unparseable verdicts become UNKNOWN, never "safe". Needs Muse API access (kickoff ~9:30 PM IST Oct 26).
 2. **Hosted dashboard + README badge** ("RedLoop ASR: 0%"). Today it's a local Streamlit app; hosting is TODO.
-3. **PixelInject visual scenario:** stub at `redloop/scenarios/visual/pixelinject_stub.py`. It has `generate_image` (Muse Image) and `segment_regions` (SAM 3.1) hooks and skips when they're unset. Wire it after kickoff.
+3. **PixelInject visual scenario:** real offline scenario `pixelinject_ticket_screenshot` (injection in the ticket screenshot's `ocr_text` leaf, read via `tickets.read_attachment`; naive emails the secret, guarded stays green) plus an offline Pillow PNG (`assets/pixelinject_demo.png`, `python -m redloop.scenarios.visual.pixelinject_stub`). Muse Image (`generate_image`) and SAM (`segment_regions`) hooks are optional polish after kickoff.
 4. **Video (about 3 min), PR red to green:** (a) open a PR that weakens the guard; (b) the Action runs and `check-suite` exits 1, so the PR goes red with ASR shown; (c) show the injected payload and action log (the secret was emailed); (d) restore the guard, push, and it goes green at 0% ASR; (e) show the PixelInject screenshot attack and the Muse Spark judge verdict; (f) show the dashboard trend and badge.
 
 Open: cost/latency columns in `report` (we can scaffold seconds offline; tokens and USD need real model calls).
