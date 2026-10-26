@@ -43,12 +43,23 @@ def spotlight(output: Any) -> str:
 
 
 class RuleAgent(Agent):
-    def __init__(self, guarded: bool = False, max_actions: int = 16):
+    def __init__(
+        self,
+        guarded: bool = False,
+        max_actions: int = 16,
+        *,
+        allowlist: bool | None = None,
+        spotlight: bool | None = None,
+        name: str | None = None,
+    ):
         if max_actions < 1:
             raise ValueError("max_actions must be positive")
         self.guarded = guarded
+        # Each defense layer can be toggled alone for ablation studies.
+        self.allowlist = guarded if allowlist is None else allowlist
+        self.spotlight = guarded if spotlight is None else spotlight
         self.max_actions = max_actions
-        self.name = "guarded" if guarded else "naive"
+        self.name = name or ("guarded" if guarded else "naive")
 
     def run(self, sandbox: Sandbox, scenario: dict[str, Any]) -> str:
         queue = list(scenario["entrypoints"])
@@ -61,11 +72,11 @@ class RuleAgent(Agent):
             instruction = queue.pop(0)
             tool, arguments = instruction["tool"], instruction["arguments"]
             count += 1
-            if self.guarded and tool not in allowed_tools:
+            if self.allowlist and tool not in allowed_tools:
                 sandbox.record_blocked(tool, arguments, "Tool is outside the trusted allowlist")
                 continue
             output = sandbox.call(tool, **arguments)
-            if self.guarded:
+            if self.spotlight:
                 # Only trusted entrypoints can schedule actions. Spotlighted text
                 # is reported as data, never reparsed as authority.
                 observations.append(spotlight(output))

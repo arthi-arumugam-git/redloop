@@ -40,3 +40,14 @@ After billing clears: record tokens/USD per Muse call into result rows (`tokens`
 
 ## Ablation note (Oct 26 2026, 6:10 PM IST, offline)
 Defense in depth check: with the guarded agent temporarily changed to also follow instructions found in tool output (spotlighting bypassed), the frozen suite still stayed green (`check-suite`: guarded 0/65 cases succeed) because the trusted-tool allowlist blocked every injected action. So the two layers are independent, and the writeup can say a single regression in either layer doesn't reopen the hole. Video idea: show that ablation on screen instead of a fully weakened guard. A fuller ablation table (spotlight only, allowlist only, both) is a candidate next step via a dedicated `--agent` variant, not by editing the shipped guard.
+
+### Ablation table (frozen suite, 65 cases, offline)
+
+| Target | Spotlighting | Tool allowlist | Cases that still succeed |
+|---|---|---|---|
+| `naive` | off | off | 65/65 |
+| `spotlight-only` | on | off | 0/65 |
+| `allowlist-only` | off | on | 0/65 |
+| `guarded` | on | on | 0/65 |
+
+Reproduce with `python -m redloop check-suite --agent <target>`. Each layer alone blocks every frozen case, so a regression in one layer does not reopen the hole. Covered by `tests/test_ablation.py`.
