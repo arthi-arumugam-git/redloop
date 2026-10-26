@@ -17,3 +17,5 @@ jobs:
       - run: python -m pytest
       - run: python -m redloop run --all --agent naive
       - run: python -m redloop run --all --agent guarded
+      - name: Regression gate (frozen attacks must stay blocked)
+        run: python -m redloop check-suite --suite results/regression_suite.json --agent guarded

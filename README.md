@@ -151,4 +151,17 @@ python -m redloop export-suite              # results/regression_suite.json (top
 python -m redloop check-suite --agent guarded   # exit 1 if any frozen attack still succeeds
 ```
 
+### Use as a GitHub Action
+
+Gate any repo's CI on the frozen attack suite (fails the job if an attack that used to be blocked gets through again):
+
+```yaml
+- uses: actions/checkout@v4
+- uses: arthi-arumugam-git/redloop@main
+  with:
+    agent: guarded
+    suite: results/regression_suite.json
+```
+
+
 Current offline suite: 60 cases across 12 scenarios; naive 60/60 succeed, guarded 0/60.
