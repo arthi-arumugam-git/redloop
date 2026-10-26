@@ -32,7 +32,7 @@ def main(argv: list[str] | None = None) -> int:
     export.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
     export.add_argument("--out", type=Path, default=Path("results/regression_suite.json"))
     export.add_argument("--max-per-scenario", type=int, default=5)
-    check = commands.add_parser("check-suite", help="Replay a regression suite; exit 1 if any case is red")
+    check = commands.add_parser("check-suite", help="Replay a regression suite; exit 1 if any case is red, 3 on infra errors")
     check.add_argument("--suite", type=Path, default=Path("results/regression_suite.json"))
     check.add_argument("--agent", choices=("naive", "guarded", "llama", "llama-guarded"), default="guarded")
     args = parser.parse_args(argv)
@@ -47,7 +47,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "check-suite":
-        from redloop.regressions import check_suite, load_suite
+        from redloop.regressions import check_suite, load_suite, suite_exit_code
         try:
             summary = check_suite(load_suite(args.suite), args.agent)
         except (ValueError, OSError) as exc:
@@ -55,7 +55,10 @@ def main(argv: list[str] | None = None) -> int:
         for o in summary["outcomes"]:
             print(f"{o['status'].upper():7} {o['scenario']:28} {', '.join(o['violations']) or '-'}")
         print(f"{summary['agent']}: {summary['red']}/{summary['total']} cases still succeed")
-        return 1 if summary["red"] else 0
+        if summary["errors"] and not summary["red"]:
+            print(f"UNKNOWN: {summary['errors']} case(s) hit infra errors; result is inconclusive, not safe",
+                  file=sys.stderr)
+        return suite_exit_code(summary)
 
     if args.command == "report":
         from redloop.dashboard_data import load_results, markdown_report

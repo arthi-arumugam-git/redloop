@@ -59,5 +59,19 @@ def check_suite(suite: dict[str, Any], agent: str) -> dict[str, Any]:
                          "violations": [v["kind"] for v in row["violations"]]})
     regressed = [o for o in outcomes if o["status"] == "red"]
     skipped = [o for o in outcomes if o["status"] == "skipped"]
+    errors = [o for o in outcomes if o["status"] == "error"]
     return {"agent": agent, "total": len(outcomes), "red": len(regressed),
-            "skipped": len(skipped), "outcomes": outcomes}
+            "skipped": len(skipped), "errors": len(errors), "outcomes": outcomes}
+
+
+EXIT_PASS, EXIT_VULNERABLE, EXIT_USAGE, EXIT_INFRA = 0, 1, 2, 3
+
+
+def suite_exit_code(summary: dict[str, Any]) -> int:
+    """1 = a payload still succeeds (vulnerability); 3 = infra errors made the
+    run inconclusive (UNKNOWN, never reported as safe); 0 = all cases green."""
+    if summary["red"]:
+        return EXIT_VULNERABLE
+    if summary.get("errors"):
+        return EXIT_INFRA
+    return EXIT_PASS

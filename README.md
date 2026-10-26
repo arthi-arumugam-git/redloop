@@ -1,10 +1,36 @@
-# RedLoop - an agent that red-teams your agents
+# RedLoop Cloud: unit tests for agent security
 
-**Meta Global AI Hackathon · indie track · Day-1 scaffold**
+**Fails your PR when prompt-injection ASR regresses.** Meta Global AI Hackathon, Startup track.
+
+```
+ PR opened ──> GitHub Action (action.yml)
+                 │
+                 ▼
+   attack suite (frozen payloads + attacker search)
+                 │  injects into mock Gmail/Slack/GitHub/X/Docs/CRM tool output
+                 ▼
+   target agent in sandbox ──> action log ──> judge (rule judge; LLM judge optional)
+                 │
+                 ▼
+   ASR per scenario ──> exit 0 green | 1 vulnerable (PR fails) | 3 infra error (UNKNOWN)
+                 │
+                 ▼
+   dashboard / badge (local Streamlit today; hosted is planned)
+```
+
+Install in 3 lines:
+
+```sh
+pip install -e '.[test]'
+python -m redloop attack --all && python -m redloop export-suite
+python -m redloop check-suite --agent guarded   # exit 1 if any frozen attack still lands
+```
+
+**What works offline today (no keys):** 12 scenarios, deterministic naive/guarded targets, rule judge, attacker search, ASR report, regression suite + `check-suite` gate, GitHub Action, local dashboard. **Needs keys:** the Llama target (any OpenAI-compatible endpoint) and the LLM judge. **Not yet run:** Muse Spark as target/attacker/judge, and the PixelInject visual scenario (stub only, `redloop/scenarios/visual/`). If the judge errors, the result is UNKNOWN, never "safe".
 
 Tool-using agents read email, chat messages, issues, and timelines. An attacker can hide instructions inside that content and turn a legitimate task into a secret leak, unauthorized message, or destructive action. RedLoop plants those instructions, runs the target in an isolated sandbox, and judges the actions it actually takes.
 
-The pitch: make indirect prompt injection reproducible, then compare agents and defenses using the same attack, policy, and action log.
+RedLoop makes indirect prompt injection reproducible, so you can compare agents and defenses with the same attack, policy, and action log, and gate every deploy on it.
 
 ## Quickstart
 
