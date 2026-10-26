@@ -141,3 +141,14 @@ Test suite: 179 passing. Next: point the attacker at a real Llama target and rep
 ## ASR report
 
 `python -m redloop report --out results/ASR.md` pivots `results/results.jsonl` into a Markdown table of attack success rate per scenario and agent, with an overall row.
+
+## Regression suite
+
+Freeze every distinct payload that broke a target into a replayable suite, then gate defenses in CI:
+
+```bash
+python -m redloop export-suite              # results/regression_suite.json (top 5 per scenario)
+python -m redloop check-suite --agent guarded   # exit 1 if any frozen attack still succeeds
+```
+
+Current offline suite: 60 cases across 12 scenarios; naive 60/60 succeed, guarded 0/60.

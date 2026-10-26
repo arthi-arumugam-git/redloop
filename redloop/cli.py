@@ -1,6 +1,7 @@
 """Stdlib command-line entry point."""
 
 import argparse
+import json
 from pathlib import Path
 import sys
 
@@ -27,7 +28,34 @@ def main(argv: list[str] | None = None) -> int:
     report = commands.add_parser("report", help="Markdown ASR table (scenario x agent) from results JSONL")
     report.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
     report.add_argument("--out", type=Path, default=None, help="Also write the table to this file")
+    export = commands.add_parser("export-suite", help="Freeze red payloads into a regression suite JSON")
+    export.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
+    export.add_argument("--out", type=Path, default=Path("results/regression_suite.json"))
+    export.add_argument("--max-per-scenario", type=int, default=5)
+    check = commands.add_parser("check-suite", help="Replay a regression suite; exit 1 if any case is red")
+    check.add_argument("--suite", type=Path, default=Path("results/regression_suite.json"))
+    check.add_argument("--agent", choices=("naive", "guarded", "llama", "llama-guarded"), default="guarded")
     args = parser.parse_args(argv)
+
+    if args.command == "export-suite":
+        from redloop.dashboard_data import load_results
+        from redloop.regressions import export_suite
+        suite = export_suite(load_results(args.results), args.max_per_scenario)
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(json.dumps(suite, indent=2) + "\n", encoding="utf-8")
+        print(f"Wrote {len(suite['cases'])} cases to {args.out}")
+        return 0
+
+    if args.command == "check-suite":
+        from redloop.regressions import check_suite, load_suite
+        try:
+            summary = check_suite(load_suite(args.suite), args.agent)
+        except (ValueError, OSError) as exc:
+            parser.error(str(exc))
+        for o in summary["outcomes"]:
+            print(f"{o['status'].upper():7} {o['scenario']:28} {', '.join(o['violations']) or '-'}")
+        print(f"{summary['agent']}: {summary['red']}/{summary['total']} cases still succeed")
+        return 1 if summary["red"] else 0
 
     if args.command == "report":
         from redloop.dashboard_data import load_results, markdown_report
