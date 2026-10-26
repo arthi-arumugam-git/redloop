@@ -13,6 +13,7 @@ Verified from https://dev.meta.ai/events/global-hackathon on Oct 26 2026, 12:05 
 | Required Meta tech | Build with Muse Spark series, Muse Image, SAM 3.1 via Meta Model API, Meta open weights, and/or Muse Code. Plan: target agent + LLM judge on Muse Spark via Meta Model API; Llama open weights as second target |
 | Entrant | Arthi Arumugam, solo (application approved Oct 22) |
 | Repository URL | https://github.com/arthi-arumugam-git/redloop |
+| Production evidence | Ablation: naive 65/65, spotlight-only 0/65, allowlist-only 0/65, guarded 0/65 (frozen suite). Manual demo workflow shows guarded green vs unguarded demo agent red without weakening shipped guard |
 | Demo URL / recording | TBD (3-min video, D10) |
 | Description / char limits | TBD, Official Rules |
 | Eligibility / licensing disclosures | TBD, Official Rules (India eligible; not a Meta/CV employee) |

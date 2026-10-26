@@ -51,3 +51,11 @@ Defense in depth check: with the guarded agent temporarily changed to also follo
 | `guarded` | on | on | 0/65 |
 
 Reproduce with `python -m redloop check-suite --agent <target>`. Each layer alone blocks every frozen case, so a regression in one layer does not reopen the hole. Covered by `tests/test_ablation.py`.
+
+## Filming the green-vs-red CI story (demo mode, production guard untouched)
+We do **not** ship or PR a weakened guard. The red side uses the separate, clearly labeled unguarded demo agent (`--agent naive`); `guarded` code is never edited.
+
+- **Local (offline, no keys):** `./demo/red_vs_green.sh` prints guarded exit 0 (green, 0/65) and unguarded demo exit 1 (red, 65/65).
+- **GitHub Actions:** Actions tab, **"Demo - guarded (green) vs unguarded (red)"**, click *Run workflow* (manual `workflow_dispatch` only, never on push/PR). Two jobs run side by side: `Guarded agent ... expected GREEN` passes; `UNGUARDED DEMO agent ... expected RED` fails with `check-suite` exit 1. Screenshot the run summary, then open the red job log for the payload and the `gmail.send_email` evidence.
+- **Defense-in-depth beat:** follow with `check-suite --agent spotlight-only` and `--agent allowlist-only` (each 0/65) to show either layer alone holds.
+- Covered by `tests/test_demo_red_vs_green.py`.

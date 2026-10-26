@@ -1,0 +1,28 @@
+# DEMO ONLY (for the video / CI screenshot). Manual trigger; never runs on push/PR.
+# Production guard code is untouched: the red job targets the separate,
+# clearly unguarded `naive` demo agent, not a weakened `guarded` agent.
+name: Demo - guarded (green) vs unguarded (red)
+
+on: workflow_dispatch
+
+jobs:
+  guarded-green:
+    name: Guarded agent (production defenses) - expected GREEN
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.13"}
+      - run: python -m pip install -e .
+      - run: python -m redloop check-suite --suite results/regression_suite.json --agent guarded
+
+  unguarded-demo-red:
+    name: UNGUARDED DEMO agent (no defenses) - expected RED
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.13"}
+      - run: python -m pip install -e .
+      - run: echo "::warning::DEMO ONLY - running the unguarded naive agent to show what RedLoop catches"
+      - run: python -m redloop check-suite --suite results/regression_suite.json --agent naive
