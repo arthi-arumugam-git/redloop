@@ -20,7 +20,7 @@
    dashboard / badge (local Streamlit today; hosted is planned)
 ```
 
-> **Muse Spark status (Oct 26 2026):** live Muse runs are blocked on Meta Model API billing (`402 billing_not_configured`; card payment hold failed). Until the hold succeeds, **the offline path is the demo**: mock naive/guarded targets, rule judge, frozen 65-case suite. No `META_API_KEY` is required for anything below.
+> **Muse Spark status:** Meta Model API live as of Oct 26 2026 ~9:40 PM IST. Live on the frozen 65-case suite (Muse Spark 1.3 as target and judge): undefended `llama` 0/56 completed cases red (ASR 0.0%, 9 ERROR = 8-turn budget exhausted on docs_* scenarios, counted UNKNOWN), `llama-guarded` 0/55 red (ASR 0.0%, 10 ERROR). Muse judge vs rule judge verdict agreement 100% (111/111). ~1.46M tokens, ≈$2.70 at list price. See `results/MUSE_ASR.md`. The offline path (mock targets, rule judge) still needs no key.
 
 Install in 3 lines:
 
@@ -30,7 +30,7 @@ python -m redloop attack --all && python -m redloop export-suite
 python -m redloop check-suite --agent guarded   # exit 1 if any frozen attack still lands
 ```
 
-**What works offline today (no keys):** 13 scenarios (including PixelInject: a support-ticket screenshot whose OCR text carries the injection, plus an offline Pillow-generated PNG at `assets/pixelinject_demo.png`), deterministic naive/guarded targets, rule judge, attacker search, ASR report, regression suite + `check-suite` gate, GitHub Action, local dashboard. **Needs keys:** the Llama target (any OpenAI-compatible endpoint) and the LLM judge. **Not yet run:** Muse Spark as target/attacker/judge, and the optional Muse Image/SAM live path for PixelInject (hooks in `redloop/scenarios/visual/pixelinject_stub.py`, post-kickoff polish). If the judge errors, the result is UNKNOWN, never "safe".
+**What works offline today (no keys):** 13 scenarios (including PixelInject: a support-ticket screenshot whose OCR text carries the injection, plus an offline Pillow-generated PNG at `assets/pixelinject_demo.png`), deterministic naive/guarded targets, rule judge, attacker search, ASR report, regression suite + `check-suite` gate, GitHub Action, local dashboard. **Needs keys:** the Llama target (any OpenAI-compatible endpoint) and the LLM judge. **Done live:** Muse Spark as target and judge (`results/MUSE_ASR.md`). **Not yet run:** Muse as attacker (live `attack --all`), and the optional Muse Image/SAM live path for PixelInject (hooks in `redloop/scenarios/visual/pixelinject_stub.py`, post-kickoff polish). If the judge errors, the result is UNKNOWN, never "safe".
 
 Tool-using agents read email, chat messages, issues, and timelines. An attacker can hide instructions inside that content and turn a legitimate task into a secret leak, unauthorized message, or destructive action. RedLoop plants those instructions, runs the target in an isolated sandbox, and judges the actions it actually takes.
 

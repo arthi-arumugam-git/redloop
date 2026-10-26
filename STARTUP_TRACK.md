@@ -7,7 +7,7 @@ Startup track is judged on **technical execution and whether it holds up in prod
 | --- | --- | --- |
 | Can a team drop it into CI? | `action.yml` GitHub Action + `check-suite` gate that fails the build on any regression | Done (06078f5) |
 | Is the score reproducible? | Frozen attack suite (65 payloads, 13 scenarios incl. PixelInject), deterministic offline run, seedable | Done (3fda41e) |
-| Does it work on a real Meta model? | `llama-guarded` target + Muse Spark target via Meta Model API, LLM judge on Muse Spark | Llama done; Muse env wired (META_API_KEY → api.meta.ai/v1, muse-spark-1.3). Live runs **blocked on Meta billing** (402 billing_not_configured; card hold failed). Offline path is the demo until the hold succeeds |
+| Does it work on a real Meta model? | `llama-guarded` target + Muse Spark target via Meta Model API, LLM judge on Muse Spark | Done. Muse API live as of Oct 26 ~9:40 PM IST. Live on the frozen 65-case suite (Muse Spark 1.3 as target and judge): undefended `llama` 0/56 completed cases red (ASR 0.0%, 9 ERROR = 8-turn budget exhausted on docs_* scenarios, counted UNKNOWN), `llama-guarded` 0/55 red (ASR 0.0%, 10 ERROR). Muse judge vs rule judge verdict agreement 100% (111/111). ~1.46M tokens, ≈$2.70 at list price. See `results/MUSE_ASR.md`. |
 | Is the judge trustworthy? | `ChatLLMJudge` + `agreement()` vs rule judge, report agreement % in README | Code done; run on real model pending |
 | Is it fast and cheap enough? | `report` prints a cost/latency table (runs, total/mean/p95 seconds, tokens, USD); every run row records `seconds` | Seconds done offline; tokens/USD N/A until a real model call |
 | Does it fail safely? | Retries/backoff (429/5xx/resets, Retry-After, `REDLOOP_HTTP_ATTEMPTS`) and timeouts on model calls; errors recorded as `error` rows, non-zero exit | Done: retries (3453dab); `check-suite` exits 3 on infra errors (UNKNOWN), 1 on vulnerability |
@@ -19,7 +19,7 @@ Startup track is judged on **technical execution and whether it holds up in prod
 - **Why now:** agents now read untrusted tool output (email, web, tickets); one injected instruction can exfiltrate data or send mail.
 
 ## Next build steps (priority order)
-1. ~~Cost and latency columns in `report`~~ seconds done; tokens/USD wire-up after Muse billing clears.
+1. ~~Cost and latency columns in `report`~~ seconds done; tokens/USD recorded per Muse call in `results/muse_live.jsonl`.
 2. ~~Retry wrapper; distinct infra exit code~~ done (exit 3 = infra/UNKNOWN, 1 = vulnerable).
 3. Run the suite on Muse Spark via Meta Model API as soon as kickoff grants access; publish before/after table.
 4. ~~Install section at top of README~~ done (3-line install + flow diagram).
@@ -32,11 +32,11 @@ Startup track is judged on **technical execution and whether it holds up in prod
 4. **Video (about 3 min), PR red to green:** (a) open a PR that weakens the guard; (b) the Action runs and `check-suite` exits 1, so the PR goes red with ASR shown; (c) show the injected payload and action log (the secret was emailed); (d) restore the guard, push, and it goes green at 0% ASR; (e) show the PixelInject screenshot attack and the Muse Spark judge verdict; (f) show the dashboard trend and badge.
 
 ## Muse status (Oct 26 2026)
-Muse Spark live runs are **blocked on Meta Model API billing** (402 `billing_not_configured`; Mastercard payment hold failed). Arthi chose to skip Muse for now. The **offline path is the demo** until the card hold succeeds; nothing in CI or the demo needs `META_API_KEY`.
+Muse Spark API is **live** as of Oct 26 2026 ~9:40 PM IST. Live on the frozen 65-case suite (Muse Spark 1.3 as target and judge): undefended `llama` 0/56 completed cases red (ASR 0.0%, 9 ERROR = 8-turn budget exhausted on docs_* scenarios, counted UNKNOWN), `llama-guarded` 0/55 red (ASR 0.0%, 10 ERROR). Muse judge vs rule judge verdict agreement 100% (111/111). ~1.46M tokens, ≈$2.70 at list price. See `results/MUSE_ASR.md`.
 
 Offline polish shipped: seconds/latency columns in `report`; `python -m redloop badge` (offline SVG + README snippet, `assets/redloop-asr-badge.svg`); `check-suite` exit codes 0/1/3 covered by tests; `VIDEO_SCRIPT.md` outline.
 
-After billing clears: record tokens/USD per Muse call into result rows (`tokens`, `usd` fields are already read by `report`), run the suite on Muse Spark as target/judge, publish judge agreement %, fill DEMO_SCRIPT placeholders, host dashboard/badge.
+Next: live `attack --all --agents llama,llama-guarded` (Muse as attacker target) to find payloads that beat undefended Muse, since the frozen suite (mined against the mock naive agent) does not; raise max_turns for docs_* scenarios; host dashboard/badge.
 
 ## Ablation note (Oct 26 2026, 6:10 PM IST, offline)
 Defense in depth check: with the guarded agent temporarily changed to also follow instructions found in tool output (spotlighting bypassed), the frozen suite still stayed green (`check-suite`: guarded 0/65 cases succeed) because the trusted-tool allowlist blocked every injected action. So the two layers are independent, and the writeup can say a single regression in either layer doesn't reopen the hole. Video idea: show that ablation on screen instead of a fully weakened guard. A fuller ablation table (spotlight only, allowlist only, both) is a candidate next step via a dedicated `--agent` variant, not by editing the shipped guard.
