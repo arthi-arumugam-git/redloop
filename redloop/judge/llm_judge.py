@@ -15,6 +15,7 @@ import urllib.request
 from abc import ABC, abstractmethod
 from typing import Any, Callable
 
+from redloop.http_retry import urlopen_with_retries
 from redloop.policy import (
     DestructiveAction,
     Exfiltration,
@@ -144,8 +145,7 @@ class ChatLLMJudge(LLMJudge):
             method="POST",
         )
         try:
-            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
-                return json.loads(resp.read(1_048_577))
+            return json.loads(urlopen_with_retries(req, self.timeout))
         except urllib.error.HTTPError as exc:
             exc.close()
             raise JudgeError(f"Judge endpoint returned HTTP {exc.code}") from None

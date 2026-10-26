@@ -10,7 +10,7 @@ Startup track is judged on **technical execution and whether it holds up in prod
 | Does it work on a real Meta model? | `llama-guarded` target + Muse Spark target via Meta Model API, LLM judge on Muse Spark | Llama done; Muse Spark pending API key after kickoff |
 | Is the judge trustworthy? | `ChatLLMJudge` + `agreement()` vs rule judge, report agreement % in README | Code done; run on real model pending |
 | Is it fast and cheap enough? | Report wall-clock and token cost per suite run in `report` output | TODO |
-| Does it fail safely? | Retries/backoff and timeouts on model calls, partial results saved, non-zero exit on infra error (distinct from red finding) | TODO |
+| Does it fail safely? | Retries/backoff (429/5xx/resets, Retry-After, `REDLOOP_HTTP_ATTEMPTS`) and timeouts on model calls; errors recorded as `error` rows, non-zero exit | Retries done; distinct infra exit code TODO |
 | Can a customer see value in 3 minutes? | `make showcase` + DEMO_SCRIPT.md (naive 91% ASR to guarded 0%) | Done (bdec6b8) |
 
 ## Product framing for the writeup

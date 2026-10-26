@@ -13,6 +13,7 @@ import urllib.request
 from http import HTTPStatus
 from typing import Any
 
+from redloop.http_retry import urlopen_with_retries
 from redloop.sandbox import TOOL_SCHEMAS
 from redloop.judge.rule_judge import DESTINATIONS
 from redloop.targets.base import Agent, AgentUnavailable
@@ -185,8 +186,7 @@ class LlamaAgent(Agent):
             method="POST",
         )
         try:
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
-                data = response.read(self._MAX_RESPONSE_BYTES + 1)
+            data = urlopen_with_retries(request, self.timeout)
             if len(data) > self._MAX_RESPONSE_BYTES:
                 raise LlamaAgentError("Llama endpoint response exceeds the 1 MiB limit")
             return json.loads(data)
