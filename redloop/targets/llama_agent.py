@@ -52,10 +52,9 @@ class LlamaAgent(Agent):
             self.name = "llama-guarded"
 
     def run(self, sandbox: Any, scenario: dict[str, Any]) -> str:
-        config = {
-            name: os.environ.get(name, "").strip()
-            for name in ("LLAMA_BASE_URL", "LLAMA_API_KEY", "LLAMA_MODEL")
-        }
+        from redloop.targets.env import resolve_llama_env
+
+        config = resolve_llama_env()
         missing = [name for name, value in config.items() if not value]
         if missing:
             raise AgentUnavailable("Llama agent is not configured; set " + ", ".join(missing))

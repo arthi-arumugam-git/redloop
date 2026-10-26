@@ -90,6 +90,25 @@ python -m redloop attack --all --agents llama,llama-guarded   # before/after ASR
 
 The adapter uses `urllib`, appends `/chat/completions` to the base URL, and executes returned tool calls in the same local sandbox. Tool names use double underscores on the wire, such as `gmail__read_email`. The configured model receives the trusted task and tool outputs, including injected content. Any missing configuration produces SKIP without a network request. Endpoint errors and exhausted turn budgets produce ERROR; live-model results are not expected to match the deterministic demo.
 
+### Meta Muse Spark (Meta Model API)
+
+Zero-friction: with only `META_API_KEY` set (also accepted: `MUSE_API_KEY`, `MODEL_API_KEY`), the llama adapter and LLM judge default to `https://api.meta.ai/v1` and `muse-spark-1.3`:
+
+```sh
+export META_API_KEY=...            # never commit or print
+python -m redloop run --scenario <name> --agent llama
+```
+
+Explicit equivalent (LLAMA_* always wins over MUSE_/META_*):
+
+```sh
+export LLAMA_BASE_URL=https://api.meta.ai/v1
+export LLAMA_API_KEY="$META_API_KEY"
+export LLAMA_MODEL=muse-spark-1.3   # or muse-spark-1.2 / 1.1; override via MUSE_MODEL
+```
+
+Muse Spark always reasons; do not send `reasoning_effort: none` (400). Endpoint failures (401/403 restricted account, 5xx) become ERROR rows and `check-suite` exit 3 (UNKNOWN), never green/safe. LLM judge HTTP errors raise `JudgeError`, never an empty "no violations" verdict.
+
 ## Architecture
 
 ```text

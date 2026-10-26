@@ -56,12 +56,12 @@ class LLMJudge(ABC):
 
 
 def _config() -> dict[str, str]:
+    from redloop.targets.env import resolve_llama_env
+
+    fallback = resolve_llama_env()
     out = {}
     for suffix in ("BASE_URL", "API_KEY", "MODEL"):
-        out[suffix] = (
-            os.environ.get(f"JUDGE_{suffix}", "").strip()
-            or os.environ.get(f"LLAMA_{suffix}", "").strip()
-        )
+        out[suffix] = os.environ.get(f"JUDGE_{suffix}", "").strip() or fallback[f"LLAMA_{suffix}"]
     return out
 
 

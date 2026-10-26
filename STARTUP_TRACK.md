@@ -7,7 +7,7 @@ Startup track is judged on **technical execution and whether it holds up in prod
 | --- | --- | --- |
 | Can a team drop it into CI? | `action.yml` GitHub Action + `check-suite` gate that fails the build on any regression | Done (06078f5) |
 | Is the score reproducible? | Frozen attack suite (65 payloads, 13 scenarios incl. PixelInject), deterministic offline run, seedable | Done (3fda41e) |
-| Does it work on a real Meta model? | `llama-guarded` target + Muse Spark target via Meta Model API, LLM judge on Muse Spark | Llama done; Muse Spark pending API key after kickoff |
+| Does it work on a real Meta model? | `llama-guarded` target + Muse Spark target via Meta Model API, LLM judge on Muse Spark | Llama done; Muse env wired (META_API_KEY → api.meta.ai/v1, muse-spark-1.3). Live smoke Oct 26 5:25 PM IST: HTTP 401 invalid_api_key, live ASR pending valid key |
 | Is the judge trustworthy? | `ChatLLMJudge` + `agreement()` vs rule judge, report agreement % in README | Code done; run on real model pending |
 | Is it fast and cheap enough? | Report wall-clock and token cost per suite run in `report` output | TODO |
 | Does it fail safely? | Retries/backoff (429/5xx/resets, Retry-After, `REDLOOP_HTTP_ATTEMPTS`) and timeouts on model calls; errors recorded as `error` rows, non-zero exit | Done: retries (3453dab); `check-suite` exits 3 on infra errors (UNKNOWN), 1 on vulnerability |
