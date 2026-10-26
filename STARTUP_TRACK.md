@@ -37,3 +37,6 @@ Muse Spark live runs are **blocked on Meta Model API billing** (402 `billing_not
 Offline polish shipped: seconds/latency columns in `report`; `python -m redloop badge` (offline SVG + README snippet, `assets/redloop-asr-badge.svg`); `check-suite` exit codes 0/1/3 covered by tests; `VIDEO_SCRIPT.md` outline.
 
 After billing clears: record tokens/USD per Muse call into result rows (`tokens`, `usd` fields are already read by `report`), run the suite on Muse Spark as target/judge, publish judge agreement %, fill DEMO_SCRIPT placeholders, host dashboard/badge.
+
+## Ablation note (Oct 26 2026, 6:10 PM IST, offline)
+Defense in depth check: with the guarded agent temporarily changed to also follow instructions found in tool output (spotlighting bypassed), the frozen suite still stayed green (`check-suite`: guarded 0/65 cases succeed) because the trusted-tool allowlist blocked every injected action. So the two layers are independent, and the writeup can say a single regression in either layer doesn't reopen the hole. Video idea: show that ablation on screen instead of a fully weakened guard. A fuller ablation table (spotlight only, allowlist only, both) is a candidate next step via a dedicated `--agent` variant, not by editing the shipped guard.
