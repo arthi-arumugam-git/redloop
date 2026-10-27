@@ -15,6 +15,11 @@ export LLAMA_MODEL=nvidia/nemotron-3-super-120b-a12b   # or nvidia/NVIDIA-Nemotr
 ```
 (us-central1 models may need https://api.tokenfactory.us-central1.nebius.com/v1 — verify on first call.)
 
+## One-env-var setup (added Oct 27, 11:10 PM IST)
+`export NEBIUS_API_KEY=...` is now enough: `resolve_llama_env()` maps it to Token Factory
+(`https://api.tokenfactory.nebius.com/v1`) and `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B` by default.
+Override with `NEBIUS_BASE_URL` / `NEBIUS_MODEL` (e.g. `nvidia/nemotron-3-super-120b-a12b`). Model IDs unverified until first live call.
+
 ## Steps once a key exists
 1. Smoke test one scenario against Nemotron Nano, then Super (tool calling must work).
 2. Run naive vs guarded attack suite; save results/NEBIUS_NEMOTRON.md (real numbers only).
