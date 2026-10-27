@@ -33,3 +33,6 @@ RedLoop drops a tool-using agent into sandboxed email, Slack, GitHub, X, calenda
 ## Links
 - Repo: https://github.com/arthi-arumugam-git/redloop
 - Demo video: TBD (3 minutes)
+
+## Demo video
+https://youtu.be/T6BolZX1AWM (Unlisted, uploaded Oct 27 2026)
