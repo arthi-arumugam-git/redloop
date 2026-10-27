@@ -156,7 +156,7 @@ The search scaffold evaluates seeds, mutates the current best payload, and keeps
 
 - **Day 1:** offline reproducible scenarios, vulnerable and guarded baselines, rule judge, action logs, optional endpoint adapter, tests, and CI.
 - **Day 2:** validate the live target integration and grow the fixture corpus and evaluation controls.
-- **Days 3–5 (TODO):** model-driven mutations, richer search fitness and budgets, lineage and checkpoints, an implemented LLM judge, and comparisons across target models and defenses.
+- **Days 3–5 (shipped):** live Muse Spark target (unguarded and guarded), evolutionary attack search run live (0/255 breaches), cost and latency metering on the frozen suite, and the `docs.list_docs` fix for document-ID looping. Still open: lineage and checkpoints, comparisons across more target models.
 - **Later:** results viewer and defense suggestions backed by rerun evidence.
 
 Submission fields and eligibility details remain placeholders in [SUBMISSION_FIELDS.md](SUBMISSION_FIELDS.md) until kickoff rules are available. This scaffold does not assume unverified event dates or submission requirements.

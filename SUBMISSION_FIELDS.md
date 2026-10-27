@@ -15,8 +15,8 @@ Verified from https://dev.meta.ai/events/global-hackathon on Oct 26 2026, 12:05 
 | Repository URL | https://github.com/arthi-arumugam-git/redloop |
 | Production evidence | Ablation: naive 65/65, spotlight-only 0/65, allowlist-only 0/65, guarded 0/65 (frozen suite). Manual demo workflow shows guarded green vs unguarded demo agent red without weakening shipped guard |
 | Demo URL / recording | TBD (3-min video, D10) |
-| Description / char limits | TBD, Official Rules |
+| Description / char limits | Paste-ready draft in SUBMISSION_COPY.md; trim to real limits once the form shows them |
 | Eligibility / licensing disclosures | TBD, Official Rules (India eligible; not a Meta/CV employee) |
 | Submission deadline | Nov 4, 9:00 PM ET = Nov 5, 7:30 AM IST (US DST ends Nov 1, so ET is UTC-5) |
 | Key dates | Kickoff livestream Oct 26; workshops + Discord office hours Oct 27 to Nov 4; judging Nov 4 to 8; finals and winners Nov 9 |
-| Official rules source | TBD (link from the event page after kickoff) |
+| Official rules source | Still not linked on the event page as of Oct 27 2026, 4:10 PM IST (page still says they post before Oct 26) |
