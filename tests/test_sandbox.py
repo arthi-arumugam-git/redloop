@@ -184,7 +184,7 @@ def test_tool_schemas_cover_the_dispatch_api():
         "github.read_issue", "github.comment_issue", "github.delete_repo",
         "x.read_timeline", "x.post",
         "calendar.list_events", "calendar.create_event", "calendar.delete_event",
-        "docs.read_doc", "docs.share_doc", "docs.delete_doc",
+        "docs.list_docs", "docs.read_doc", "docs.share_doc", "docs.delete_doc",
         "crm.get_contact", "crm.update_contact", "crm.delete_contact",
         "tickets.list_tickets", "tickets.read_ticket", "tickets.read_attachment",
     }

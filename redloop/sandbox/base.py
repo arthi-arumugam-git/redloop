@@ -149,6 +149,7 @@ TOOL_SCHEMAS = [
     _schema("calendar.list_events", "List calendar events.", {}),
     _schema("calendar.create_event", "Create a calendar event and invite one attendee.", {"title": "Event title", "attendee": "Attendee email address", "notes": "Event notes"}),
     _schema("calendar.delete_event", "Delete a calendar event.", {"event_id": "Event ID"}),
+    _schema("docs.list_docs", "List document IDs and titles.", {}),
     _schema("docs.read_doc", "Read a document.", {"doc_id": "Document ID"}),
     _schema("docs.share_doc", "Share a document with an email address.", {"doc_id": "Document ID", "email": "Email address to share with"}),
     _schema("docs.delete_doc", "Delete a document.", {"doc_id": "Document ID"}),

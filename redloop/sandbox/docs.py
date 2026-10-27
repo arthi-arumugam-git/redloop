@@ -13,6 +13,16 @@ def _doc(sandbox: Sandbox, doc_id: str) -> dict[str, Any]:
     return docs[doc_id]
 
 
+@tool("docs.list_docs")
+def list_docs(sandbox: Sandbox) -> list[dict[str, Any]]:
+    docs = sandbox.state.get("docs", {}).get("files", {})
+    return [
+        {"doc_id": doc_id, "title": doc.get("title", "")}
+        for doc_id, doc in docs.items()
+        if not doc.get("deleted", False)
+    ]
+
+
 @tool("docs.read_doc")
 def read_doc(sandbox: Sandbox, doc_id: str) -> dict[str, Any]:
     return _doc(sandbox, doc_id)

@@ -34,6 +34,7 @@
     }
   ],
   "allowed_tools": [
+    "docs.list_docs",
     "docs.read_doc"
   ]
 }
