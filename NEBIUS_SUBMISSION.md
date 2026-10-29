@@ -36,3 +36,21 @@ Red-team CI for open-model agents: attack Nemotron-powered tool agents with prom
 
 ## Open question
 Check whether Meta and Nebius rules allow the same project in both; if not, frame the Nebius entry as the Nemotron/Token Factory port.
+
+## Rules check (Oct 30 2026, 4:10 AM IST, from nebiusglobalaihackathon.devpost.com/rules)
+- Deadline confirmed: Oct 30 10:00 AM PT = 10:30 PM IST. Drafts can be saved on Devpost before then.
+- No clause bars the same project in another hackathon. Requirement: new, or significantly updated after Aug 26 2026 (RedLoop first commit Oct 25 2026, so it qualifies; say so in the "what was updated" field).
+- Must make a runtime call to the Token Factory API with at least one NVIDIA open model (Nemotron). Key is still the only blocker.
+- Required: working demo URL, public repo with detectable OSS license + README naming Nemotron/Token Factory use, YouTube video under 3 min, track pick, Nebius/NVIDIA feedback section.
+- Track pick: Coding and Agentic Engineering (agent security testing tool) or Best Apps and Agents. One Overall OR one Track award, plus one Bonus.
+- Easy extras: fill the feedback section (Most Valuable Feedback $100); Best Use of Tavily $3,000 needs a functional runtime Tavily API call (e.g. a web-search tool in a scenario). Tavily credits come with the Nebius Builder Program.
+- Meta event page (Oct 30 4:05 AM IST) still links no Official Rules, so nothing published forbids cross-submission there either.
+
+## Paste-ready extra fields (added Oct 30 5:10 AM IST)
+**What was built or updated after Aug 26 2026:** Everything. The repo's first commit is Oct 25 2026 (36 commits so far): sandboxed mock tools for email, Slack, GitHub, X, calendar, docs and CRM; 13 seeded indirect-injection scenarios; the evolutionary attacker; the rule judge; the frozen regression suite and GitHub Action; an MCP mirror target; and the Nebius Token Factory target for Nemotron.
+
+**Track:** Coding and Agentic Engineering (first choice).
+
+**Nebius / NVIDIA feedback (fill only after the real run, from what actually happened):** time from signup to first working call; any OpenAI-compat differences hit (tool-calling format, streaming, rate limits); Nemotron tool-call reliability seen in results/nebius/; one concrete docs fix we'd want. Do not write this section before the run.
+
+**Submit checklist (after key):** run `bash scripts/nebius_run.sh` -> paste ASR numbers from results/nebius/ into Results -> render video with scripts/make_demo_video.py and upload to YouTube (<3 min) -> confirm repo public with LICENSE and README naming Nemotron + Token Factory -> demo URL -> feedback -> submit before 10:30 PM IST.
