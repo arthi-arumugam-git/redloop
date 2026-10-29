@@ -30,6 +30,10 @@ RedLoop drops a tool-using agent into sandboxed email, Slack, GitHub, X, calenda
 
 **Why it matters for production.** The same harness that finds a breach turns it into a permanent CI check, so agent security becomes a regression test instead of a one-off audit.
 
+## Real-agent result (Letta, Oct 29 2026)
+
+RedLoop ran 15 email-borne injection cases (5 frozen + 10 hand-written, incl. hidden HTML, spoofed tool results, memory-write bait, multilingual) against a live Letta agent wired to an email MCP server (list/read/send). Control run worked end to end. Result: 15/15 green, 0 breaks, 0 errors; every case reached the agent. A null result is still a result: it shows the harness can drive a real agent through real tool calls and score it, and it sets the baseline for the next targets. Raw output: `letta-email/summary.json` (private run dir).
+
 ## Links
 - Repo: https://github.com/arthi-arumugam-git/redloop
 - Demo video: TBD (3 minutes)
