@@ -14,6 +14,7 @@ dependencies = []
 test = ["pytest>=7", "pillow>=10"]
 visual = ["pillow>=10"]
 dashboard = ["streamlit>=1.30"]
+mcp = ["mcp>=1.2"]
 
 [project.scripts]
 redloop = "redloop.cli:main"
@@ -23,6 +24,7 @@ include = ["redloop*"]
 
 [tool.setuptools.package-data]
 "redloop.scenarios" = ["*.json"]
+"redloop.mcp_target" = ["configs/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
