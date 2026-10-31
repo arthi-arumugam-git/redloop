@@ -1,0 +1,35 @@
+1
+00:00:00,000 --> 00:00:11,500
+Agents read untrusted email, tickets and screenshots. One hidden instruction can leak a secret. RedLoop is a unit test for that.
+
+2
+00:00:11,700 --> 00:00:19,400
+Same 65 attacks, two agents: our guarded agent, and an unguarded demo agent with no defenses.
+
+3
+00:00:19,600 --> 00:00:29,000
+Thirteen sandboxed scenarios, from email to a screenshot support ticket. An evolutionary attacker keeps the strongest payloads.
+
+4
+00:00:29,200 --> 00:00:46,500
+CI replays all 65 frozen attacks. The build fails, and it shows the ASR.
+
+5
+00:00:46,700 --> 00:00:58,100
+This is the exact payload, and the agent emailing the secret out.
+
+6
+00:00:58,300 --> 00:01:15,600
+Guarded stays green at 0%. And either layer alone still blocks all 65, so one regression doesn't reopen the hole.
+
+7
+00:01:15,800 --> 00:01:27,300
+Live on Muse Spark through the Meta Model API: zero breaches on the frozen suite, about a dollar sixteen per sweep.
+
+8
+00:01:27,500 --> 00:01:39,000
+The live runs also caught a real bug: the agent looped guessing document IDs. A list-docs tool fixed it.
+
+9
+00:01:39,200 --> 00:01:45,131
+RedLoop: find the hole, keep it closed.

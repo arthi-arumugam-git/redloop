@@ -1,0 +1,28 @@
+name: RedLoop prompt-injection regression gate
+description: Replay a frozen suite of indirect prompt-injection attacks against your agent and fail the build if any still succeed.
+branding:
+  icon: shield
+  color: red
+inputs:
+  agent:
+    description: Target agent to check (naive, guarded, llama, llama-guarded)
+    required: false
+    default: guarded
+  suite:
+    description: Path to a frozen regression suite JSON (from `redloop export-suite`)
+    required: false
+    default: results/regression_suite.json
+  python-version:
+    description: Python version
+    required: false
+    default: "3.12"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+    - shell: bash
+      run: python -m pip install "${{ github.action_path }}"
+    - shell: bash
+      run: python -m redloop check-suite --suite "${{ inputs.suite }}" --agent "${{ inputs.agent }}"

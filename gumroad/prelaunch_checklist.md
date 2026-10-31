@@ -1,0 +1,12 @@
+# Agent / MCP pre-launch security checklist
+- [ ] All untrusted content (email, docs, web, tool results) is marked as data (spotlighting/delimiters)
+- [ ] There is a tool allowlist per task, and the agent can't call tools outside it
+- [ ] Destructive and external-send actions need user confirmation
+- [ ] MCP servers use least-privilege scopes and test credentials in staging
+- [ ] Secrets never reach the model context, and output is scanned for keys
+- [ ] Outbound recipients/domains are allowlisted
+- [ ] A turn/step budget is set, and exceeding it gives UNKNOWN, not success
+- [ ] Every tool call is recorded in an action log for audit
+- [ ] OCR/image inputs are treated as untrusted text
+- [ ] The regression suite runs in CI and the build fails if ASR rises
+- [ ] The LLM judge is cross-checked against rule-based checks

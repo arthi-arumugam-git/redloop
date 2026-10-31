@@ -19,4 +19,5 @@ Verified from https://dev.meta.ai/events/global-hackathon on Oct 26 2026, 12:05 
 | Eligibility / licensing disclosures | Per event page (checked Oct 31 2026, 9:05 AM IST): open worldwide except sanctioned countries/regions (India eligible); Meta and Cerebral Valley employees, contractors, interns, government-affiliated people and their families are excluded (Arthi is none of these). Code is Arthi's own, public on GitHub. Accept the Official Rules on the submit form when they appear |
 | Submission deadline | Nov 4, 9:00 PM ET = Nov 5, 7:30 AM IST (US DST ends Nov 1, so ET is UTC-5) |
 | Key dates | Kickoff livestream Oct 26; workshops + Discord office hours Oct 27 to Nov 4; judging Nov 4 to 8; finals and winners Nov 9 |
+| Submit form (read Oct 31 6:08 PM IST) | See CV_SUBMIT_FORM.md; submit at https://cerebralvalley.ai/e/meta-ai-developer-hackathon/hackathon/submit |
 | Official rules source | Still not linked on the event page as of Oct 31 2026, 9:05 AM IST (page still says they post before Oct 26; only Application Overview and Event Waiver are linked) |

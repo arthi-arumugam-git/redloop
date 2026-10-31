@@ -1,0 +1,15 @@
+Agents read untrusted email, tickets and screenshots. One hidden instruction can leak a secret. RedLoop is a unit test for that.
+
+Same 65 attacks, two agents: our guarded agent, and an unguarded demo agent with no defenses.
+
+CI replays all 65 frozen attacks. The build fails, and it shows the ASR.
+
+This is the exact payload, and the agent emailing the secret out.
+
+Guarded stays green at 0%. And either layer alone still blocks all 65, so one regression doesn't reopen the hole.
+
+It also catches injections hidden in ticket screenshots.
+
+Seconds per run, and infra errors are UNKNOWN, never safe.
+
+RedLoop: find the hole, keep it closed.
