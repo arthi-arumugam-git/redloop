@@ -17,6 +17,6 @@ Pre-window pieces (sandbox tools, rule judge, check-suite, GitHub Action) may ap
 
 ## Re-cut checklist (before Nov 5, 7:30 AM IST)
 - [x] Re-record narration from the Line column: `demo/narration_v4.txt` + `demo/narration_v4.mp3` (edge-tts AriaNeural, 189 words, 84 s; shots can hold longer or add lines to reach ~2:45).
-- [ ] Build from `scripts/make_demo_video.py` with the shots above; drop the offline showcase opener.
-- [ ] Keep it at or under 3:00.
+- [x] Built `demo/redloop_demo_v4.mp4` (109 s, 8 shots, per-shot edge-tts) with `scripts/make_demo_v4.py`; no offline showcase opener.
+- [x] Keep it at or under 3:00 (1:49).
 - [ ] Upload, then swap the link in SUBMISSION_COPY.md and SUBMISSION_FIELDS.md.
