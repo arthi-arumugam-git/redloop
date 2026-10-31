@@ -40,3 +40,21 @@ RedLoop ran 15 email-borne injection cases (5 frozen + 10 hand-written, incl. hi
 
 ## Demo video
 https://youtu.be/T6BolZX1AWM (Unlisted, uploaded Oct 27 2026)
+
+## Built during the hackathon (required disclosure, Startups track)
+Build window opened Oct 26 2026 (ET). Commit times from `git log`, converted to ET (UTC-4). The Startups track allows existing code if the new work is clearly stated; the demo video must show only hackathon-built work.
+
+**Existing before the window (commits through Oct 25 ET, 2ea5314..bdec6b8):** sandbox mock tools (gmail, slack, github, x, calendar, docs, CRM), naive and guarded targets, policy schema, rule judge, 12 seeded injection scenarios, offline evolutionary attacker, OpenAI-compatible LLM judge, Markdown report, frozen regression suite (export-suite / check-suite), the reusable GitHub Action, and the offline showcase script.
+
+**Built during the window (Oct 26 ET onward, 21357a4..):**
+- Muse Spark integration through the Meta Model API (`META_`/`MUSE_API_KEY`, api.meta.ai/v1) as both target agent and judge.
+- Live Muse Spark runs: frozen 65-case suite (0/56 unguarded, 0/55 guarded, about $1.16 per sweep) and live evolutionary search (255 episodes, 0 breaches).
+- `docs.list_docs` tool, which fixed the doc-ID looping bug the live runs exposed.
+- PixelInject screenshot-OCR support-ticket scenario and tickets tools (suite 60 to 65 cases).
+- Defense-in-depth ablation targets (spotlight-only, allowlist-only).
+- Production hardening: retry and backoff on 429/5xx with Retry-After; check-suite exit code 3 for infra errors.
+- Latency and cost columns in the report, SVG ASR badge, demo mode workflow.
+- MCP mirror target and the live Letta real-agent baseline (15/15 green).
+- Narrated demo video, landing page, MIT license.
+
+**Video check before submit:** the current demo v3 opens on the offline showcase, which runs pre-window code. Re-cut so the visuals lead with the Muse Spark live results, PixelInject, list_docs fix and Letta run, or label the offline part as pre-existing.
