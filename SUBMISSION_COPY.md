@@ -36,7 +36,7 @@ RedLoop ran 15 email-borne injection cases (5 frozen + 10 hand-written, incl. hi
 
 ## Links
 - Repo: https://github.com/arthi-arumugam-git/redloop
-- Demo video: TBD (3 minutes)
+- Demo video: https://github.com/arthi-arumugam-git/redloop/releases/download/demo-v3/redloop_demo_v3.mp4 (1:45, narrated; YouTube unlisted link to replace this once Google verify clears)
 
 ## Demo video
 https://youtu.be/T6BolZX1AWM (Unlisted, uploaded Oct 27 2026)
