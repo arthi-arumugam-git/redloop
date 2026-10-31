@@ -39,7 +39,7 @@ RedLoop ran 15 email-borne injection cases (5 frozen + 10 hand-written, incl. hi
 - Demo video: https://github.com/arthi-arumugam-git/redloop/releases/download/demo-v4/redloop_demo_v4.mp4 (1:49, narrated, hackathon-window work only; YouTube unlisted link to replace this once Google verify clears)
 
 ## Demo video
-https://youtu.be/T6BolZX1AWM (Unlisted, uploaded Oct 27 2026)
+https://github.com/arthi-arumugam-git/redloop/releases/download/demo-v4/redloop_demo_v4.mp4 (v4, 1:49, hackathon-window work only). Do NOT use the old Oct 27 YouTube link youtu.be/T6BolZX1AWM: it opens on pre-window offline code. Swap to a YouTube unlisted upload of v4 once Google verify clears.
 
 ## Built during the hackathon (required disclosure, Startups track)
 Build window opened Oct 26 2026 (ET). Commit times from `git log`, converted to ET (UTC-4). The Startups track allows existing code if the new work is clearly stated; the demo video must show only hackathon-built work.
@@ -58,3 +58,25 @@ Build window opened Oct 26 2026 (ET). Commit times from `git log`, converted to 
 - Narrated demo video, landing page, MIT license.
 
 **Video check before submit:** the current demo v3 opens on the offline showcase, which runs pre-window code. Re-cut so the visuals lead with the Muse Spark live results, PixelInject, list_docs fix and Letta run, or label the offline part as pre-existing.
+
+## Form answers (Cerebral Valley submit form, fields in CV_SUBMIT_FORM.md)
+
+**Team Name:** RedLoop
+
+**Track:** Startups Track
+
+**Problem statement:** Push the Frontier
+
+**Most Viral Track X post link:** paste the URL of the X post from X_VIRAL_POST.md once Arthi posts it (engagement counts until Nov 8 EOD).
+
+**Describe your use of Meta products:**
+Muse Spark, called through the Meta Model API (api.meta.ai/v1), is the live target agent in RedLoop's sandbox, in an unguarded and a guarded variant, and it can also serve as the judge model. We ran the frozen 65-case regression suite against it (0/56 unguarded and 0/55 guarded breaches, about $1.16 per sweep, mean latency 8 to 10 s per scenario) and a live evolutionary attack search (255 episodes, 0 breaches). Those live runs exposed a real reliability bug, the agent looping while guessing document IDs, which we fixed by adding a docs.list_docs tool.
+
+**Why are Meta's models important to your solution?**
+RedLoop is only useful if it tests the agents teams actually ship, and teams building on Meta models need a way to prove their agent resists indirect prompt injection before and after every change. Muse Spark is cheap and fast enough (about $1.16 for a full 65-case sweep) to run the whole suite in CI on every pull request, which is what turns a one-off red-team exercise into a regression test.
+
+**How likely are you to build with Meta Model API?** Very likely
+
+**Overall opinion of Meta Model API?** Very favorable
+
+**Consent to promote materials:** Yes
