@@ -16,7 +16,7 @@ Pre-window pieces (sandbox tools, rule judge, check-suite, GitHub Action) may ap
 | 8 | 2:45-3:00 | Production + close (3453dab, 9ef5d12) | `redloop report` latency/cost table, ASR badge | "Retries on rate limits, infra errors marked unknown, never safe. RedLoop: find the hole, keep it closed." |
 
 ## Re-cut checklist (before Nov 5, 7:30 AM IST)
-- [ ] Re-record narration from the Line column (`demo/narration.txt` is v3; write v4 alongside it).
+- [x] Re-record narration from the Line column: `demo/narration_v4.txt` + `demo/narration_v4.mp3` (edge-tts AriaNeural, 189 words, 84 s; shots can hold longer or add lines to reach ~2:45).
 - [ ] Build from `scripts/make_demo_video.py` with the shots above; drop the offline showcase opener.
 - [ ] Keep it at or under 3:00.
 - [ ] Upload, then swap the link in SUBMISSION_COPY.md and SUBMISSION_FIELDS.md.

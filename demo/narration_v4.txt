@@ -1,0 +1,17 @@
+Agents read untrusted email, docs and screenshots. One hidden instruction can leak a secret. RedLoop tests for that, and this week we pointed it at Muse Spark.
+
+The sandbox and test runner existed before the hackathon; everything you see running today was built this week.
+
+65 frozen attacks against Muse Spark, with Muse Spark also judging. Zero breaches undefended, zero guarded, and the Muse judge agreed with our rule judge on all 111 completed runs. About $1.16 of target calls per sweep, $1.35 with the judge.
+
+Then we let RedLoop mutate attacks live: 255 episodes, no breach. It did find a real bug, though: agents looping on document IDs.
+
+We added a list_docs tool. Same scenarios now finish in two tool calls, all green.
+
+New this week: injections hidden inside support-ticket screenshots.
+
+Here is what a hole looks like: the unguarded demo agent goes red. Each guard layer alone keeps all 65 green.
+
+It also tests agents we didn't write: a live Letta agent through an MCP mirror, 15 of 15 green.
+
+Retries on rate limits, infra errors marked unknown, never safe. RedLoop: find the hole, keep it closed.
