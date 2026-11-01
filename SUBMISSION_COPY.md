@@ -57,7 +57,7 @@ Build window opened Oct 26 2026 (ET). Commit times from `git log`, converted to 
 - MCP mirror target and the live Letta real-agent baseline (15/15 green).
 - Narrated demo video, landing page, MIT license.
 
-**Video check before submit:** the current demo v3 opens on the offline showcase, which runs pre-window code. Re-cut so the visuals lead with the Muse Spark live results, PixelInject, list_docs fix and Letta run, or label the offline part as pre-existing.
+**Video check before submit:** done. Demo v4 (1:49, `make_demo_v4.py`) shows only hackathon-window work (Muse Spark live runs, PixelInject, list_docs fix, Letta run); it is the release asset linked above. Re-checked Nov 1 2026, 1:10 PM IST: release asset and public repo both return HTTP 200.
 
 ## Form answers (Cerebral Valley submit form, fields in CV_SUBMIT_FORM.md)
 
