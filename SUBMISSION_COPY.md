@@ -36,10 +36,10 @@ RedLoop ran 15 email-borne injection cases (5 frozen + 10 hand-written, incl. hi
 
 ## Links
 - Repo: https://github.com/arthi-arumugam-git/redloop
-- Demo video: https://github.com/arthi-arumugam-git/redloop/releases/download/demo-v4/redloop_demo_v4.mp4 (1:49, narrated, hackathon-window work only; YouTube unlisted link to replace this once Google verify clears)
+- Demo video: https://youtu.be/ioofUr2iQtQ (YouTube unlisted, uploaded Nov 2 2026; v4, narrated, hackathon-window work only). Backup: https://github.com/arthi-arumugam-git/redloop/releases/download/demo-v4/redloop_demo_v4.mp4
 
 ## Demo video
-https://github.com/arthi-arumugam-git/redloop/releases/download/demo-v4/redloop_demo_v4.mp4 (v4, 1:49, hackathon-window work only). Do NOT use the old Oct 27 YouTube link youtu.be/T6BolZX1AWM: it opens on pre-window offline code. Swap to a YouTube unlisted upload of v4 once Google verify clears.
+Use in form field 8: https://youtu.be/ioofUr2iQtQ (YouTube unlisted, uploaded Nov 2 2026 1:05 PM IST). Backup release asset: https://github.com/arthi-arumugam-git/redloop/releases/download/demo-v4/redloop_demo_v4.mp4 (v4, 1:49, hackathon-window work only). Do NOT use the old Oct 27 YouTube link youtu.be/T6BolZX1AWM: it opens on pre-window offline code. Swap to a YouTube unlisted upload of v4 once Google verify clears.
 
 ## Built during the hackathon (required disclosure, Startups track)
 Build window opened Oct 26 2026 (ET). Commit times from `git log`, converted to ET (UTC-4). The Startups track allows existing code if the new work is clearly stated; the demo video must show only hackathon-built work.
